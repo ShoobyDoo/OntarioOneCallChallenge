@@ -1,0 +1,146 @@
+﻿<Window x:Class="OntarioOneCallChallenge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OntarioOneCallChallenge"
+        mc:Ignorable="d"
+        Title="Ontario One Call Challenge by Shoaib Ali" 
+        Height="450" Width="820"
+        ResizeMode="CanMinimize">
+    
+    <!--Main Grid-->
+    <Grid x:Name="gridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition />
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="174"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Ontario One Call Logo-->
+        <Image Source="./Logo/ontarioonecalllogo.png"
+               Width="125"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               Margin="15,0"/>
+
+        <!--Windows forms host wrapped around treeview
+        wpf does not offer treeview with the after check event handler-->
+        <WindowsFormsHost Background="Transparent" Grid.Row="1"
+                          Grid.RowSpan="2"
+                          Margin="15,0,0,15">
+            <wf:TreeView CheckBoxes="True"
+                         x:Name="tvNodes"
+                         AfterCheck="tvNodes_AfterCheck"/>
+        </WindowsFormsHost>
+
+        <!--Stack panel holding the node selections info text-->
+        <StackPanel Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+       
+            <TextBlock Name="lblParentChildHeader" 
+               Text="Node Full Path: No selection"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   TextWrapping="Wrap"/>
+
+            <TextBlock Name="lblCurrentSelection" 
+                       Text="Current Selection: No selection"
+                       Foreground="Green"
+                       FontSize="14"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!--Sub grid to hold the two interaction buttons-->
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Populate Data in Tree"
+                    Margin="15,15,7.5,15" Name="btnPopulateData" Click="btnPopulateData_Click"/>
+            <Button Grid.Column="1" Content="Exit from Application"
+                    Margin="7.5,15,15,15" Name="btnExit" Click="btnExit_Click"/>
+        </Grid>
+
+        <!--Main Datagrid that will display the database result table-->
+        <DataGrid Grid.Row="1"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Margin="15,0"
+                  Name="dgCompliance"
+                  SnapsToDevicePixels="True"
+                  FontSize="14"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalAlignment="Stretch"
+                  CanUserAddRows="False"
+                  IsReadOnly="True">
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Content.Text, RelativeSource={RelativeSource Self}}"  Value="Total">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Content.Text, RelativeSource={RelativeSource Self}}"  Value="-">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Style>
+                <Style TargetType="{x:Type DataGrid}">
+                    <Setter Property="RowHeaderWidth" Value="0" />
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="GridLinesVisibility" Value="All"/>
+                    <Setter Property="HorizontalGridLinesBrush" Value="DarkGray"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="VerticalGridLinesBrush" Value="DarkGray"/>
+                    <Setter Property="SelectionUnit" Value="Cell"/>
+                </Style>
+            </DataGrid.Style>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Width" Value="150"/>
+                    <Setter Property="Padding" Value="3"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+        </DataGrid>
+
+        <!--Bottom status bar which will update as user interacts with program-->
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="3">
+            <StatusBarItem HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                    <TextBlock Text="Status: "/>
+                    <TextBlock Name="tbStatus" Text="Loading..."/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+</Window>
