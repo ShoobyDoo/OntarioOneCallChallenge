@@ -15,7 +15,7 @@ Note: Please ensure that MySQL server is running with the default credentials;
 
 ------------------------
 
-Once Python is installed, simply double click ./OntarioOneCallChallenge/Setup/easy-install.bat which will do the following:
+Once Python is installed, build the application, go to the build directory, simply double click ./Setup/easy-install.bat which will do the following:
 	1. Create a virtual environment for Python so as not to tamper with your main installation.
 	2. Activate the virtual environment, read from requirements.txt and download libraries required by the script.
 	3. Once all the dependencies have been resolved, the db_setup.py script will run.
